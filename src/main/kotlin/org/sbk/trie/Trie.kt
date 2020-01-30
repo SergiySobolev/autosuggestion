@@ -13,6 +13,11 @@ interface Trie {
     fun contains(key:String):Boolean
 
     /**
+     * Delete [key] from trie.
+     */
+    fun delete(key:String)
+
+    /**
      * Search all words start from [prefix].
      * @return all words start from [prefix]
      */

@@ -33,6 +33,29 @@ class TrieTest {
     }
 
     @Test
+    @DisplayName("Trie shouldn't contain deleted items")
+    fun test_shouldDeleteWords() {
+        val trie = DefaultTrie.createEmptyTrie()
+        trie.insert("second")
+        trie.insert("first")
+        assertAll("allWords",
+            {assertThat(trie.size, equalTo(2))},
+            {assertThat(trie.getAllWords(), hasSize(equalTo(2)))},
+            {assertThat(trie.getAllWords(), hasItems("second", "first"))},
+            {assertTrue(trie.contains("second"))},
+            {assertTrue(trie.contains("first"))}
+        )
+        trie.delete("first")
+        assertAll("allWords",
+            {assertThat(trie.size, equalTo(1))},
+            {assertThat(trie.getAllWords(), hasSize(equalTo(1)))},
+            {assertThat(trie.getAllWords(), hasItems("second"))},
+            {assertTrue(trie.contains("second"))},
+            {assertFalse(trie.contains("first"))}
+        )
+    }
+
+    @Test
     @DisplayName("Trie should contain only inserted words")
     fun test_shouldContainWord_whenItIsInserted() {
         val trie = DefaultTrie.createEmptyTrie()

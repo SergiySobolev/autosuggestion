@@ -39,12 +39,20 @@ class DefaultTrie private constructor (var root: Node, var size: Int, var endOfT
         return currentNode.endOfTheWord
     }
 
+    override fun delete(key: String) {
+        if(this.contains(key)) {
+            val keyTail = getKeyTail(key)!!
+            keyTail.endOfTheWord = false
+            size -= 1
+        }
+    }
+
     override fun getAllWordsByPrefix(prefix: String): List<String> {
         val words = mutableListOf<String>()
         if (prefix.isBlank()) {
             return words
         }
-        val prefixTail: Node? = getPrefixTail(prefix)
+        val prefixTail: Node? = getKeyTail(prefix)
         if (prefixTail == null) {
             return words
         } else {
@@ -69,7 +77,7 @@ class DefaultTrie private constructor (var root: Node, var size: Int, var endOfT
         }
     }
 
-    private fun getPrefixTail(prefix: String): Node? {
+    private fun getKeyTail(prefix: String): Node? {
         var currentNode = root
         for (c:Char in prefix) {
             if(currentNode.get(c) == null) {
