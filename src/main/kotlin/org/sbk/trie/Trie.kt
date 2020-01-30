@@ -1,8 +1,10 @@
 package org.sbk.trie
 
-class Trie(var root: Node, var size: Int, var endOfTheWord: Boolean) {
+import java.lang.IllegalStateException
 
-    constructor() : this(Node(), 0, false)
+class Trie private constructor (var root: Node, var size: Int, var endOfTheWord: Boolean) {
+
+    private constructor() : this(Node(), 0, false)
 
     fun insert(key: String) {
         if (key.isBlank()) {
@@ -22,7 +24,23 @@ class Trie(var root: Node, var size: Int, var endOfTheWord: Boolean) {
             currentWord = currentWord.substring(1)
         }
         currentNode.endOfTheWord = true
+        size += 1
     }
+
+    fun getAllWordsByPrefix(prefix: String): List<String> {
+        val words = mutableListOf<String>()
+        if (prefix.isBlank()) {
+            return words
+        }
+        val prefixTail: Node? = getPrefixTail(prefix)
+        if (prefixTail == null) {
+            return words
+        } else {
+            findWordsStartFrom(prefixTail, prefix, words)
+        }
+        return words
+    }
+
 
     fun getAllWords(): List<String> {
         val allWords: MutableList<String> = mutableListOf()
@@ -40,9 +58,40 @@ class Trie(var root: Node, var size: Int, var endOfTheWord: Boolean) {
         }
     }
 
+    private fun getPrefixTail(prefix: String): Node? {
+        var currentNode = root
+        for (c:Char in prefix) {
+            if(currentNode.get(c) == null) {
+                return null
+            }
+            currentNode = currentNode.get(c) ?: throw IllegalStateException("")
+        }
+        return currentNode
+    }
+
+
+    private fun findWordsStartFrom(prefixTail: Node, prefix: String, words: MutableList<String>) {
+        for ((k,v) in prefixTail.children) {
+            val newPrefix = prefix + k
+            if (v.endOfTheWord) {
+                words.add(newPrefix)
+            }
+            findWordsStartFrom(v, newPrefix, words)
+        }
+    }
+
+
+
+    companion object {
+        fun createEmptyTrie() : Trie = Trie()
+    }
+
 }
 
 class Node(var key: Char?, var children: MutableMap<Char, Node>, var endOfTheWord: Boolean ) {
     constructor(key:Char) : this(key, mutableMapOf<Char, Node>(), false)
     constructor() : this(null, mutableMapOf<Char, Node>(), false)
+    fun get(key: Char): Node? {
+       return children[key]
+    }
 }
