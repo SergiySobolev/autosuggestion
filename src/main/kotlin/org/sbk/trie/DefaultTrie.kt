@@ -27,6 +27,18 @@ class DefaultTrie private constructor (var root: Node, var size: Int, var endOfT
         size += 1
     }
 
+    override fun contains(key: String): Boolean {
+        var currentNode = root
+        for(c:Char in key) {
+            if (c in currentNode.children) {
+                currentNode = currentNode.get(c)!!
+            } else{
+                return false
+            }
+        }
+        return currentNode.endOfTheWord
+    }
+
     override fun getAllWordsByPrefix(prefix: String): List<String> {
         val words = mutableListOf<String>()
         if (prefix.isBlank()) {

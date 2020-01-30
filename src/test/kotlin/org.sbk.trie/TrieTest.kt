@@ -2,7 +2,7 @@ package org.sbk.trie
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
@@ -23,14 +23,29 @@ class TrieTest {
         trie.insert("")
         trie.insert("second")
         trie.insert("first")
+        trie.insert("se")
         val allWords = trie.getAllWords()
         assertAll("allWords",
-            {assertThat(trie.size, equalTo(2))},
-            {assertThat(allWords, hasSize(equalTo(2)))},
-            {assertThat(allWords, hasItem("first"))},
-            {assertThat(allWords, hasItem("second"))}
+            {assertThat(trie.size, equalTo(3))},
+            {assertThat(allWords, hasSize(equalTo(3)))},
+            {assertThat(allWords, hasItems("first", "second", "se"))}
         )
     }
+
+    @Test
+    @DisplayName("Trie should contain only inserted words")
+    fun test_shouldContainWord_whenItIsInserted() {
+        val trie = DefaultTrie.createEmptyTrie()
+        trie.insert("someword")
+        trie.insert("anotherword")
+        assertAll(
+            { assertTrue(trie.contains("someword"))},
+            { assertTrue(trie.contains("anotherword"))},
+            { assertFalse(trie.contains("unknownword"))},
+            { assertFalse(trie.contains(""))}
+        )
+    }
+
 
     @Test
     @DisplayName("Search by prefix without result set limiting")
