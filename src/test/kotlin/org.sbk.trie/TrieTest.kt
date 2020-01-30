@@ -12,14 +12,14 @@ class TrieTest {
     @Test
     @DisplayName("Empty created trie should have zero size")
     fun test_sizeShouldBeZero_ifTrieIsEmpty() {
-        val trie = Trie.createEmptyTrie()
+        val trie = DefaultTrie.createEmptyTrie()
         assertEquals(trie.size, 0)
     }
 
     @Test
     @DisplayName("Trie should contain 'first' and 'second' words")
     fun test_shouldContainTwoWords_whenTwoWordsInserted() {
-        val trie = Trie.createEmptyTrie()
+        val trie = DefaultTrie.createEmptyTrie()
         trie.insert("")
         trie.insert("second")
         trie.insert("first")
@@ -35,7 +35,7 @@ class TrieTest {
     @Test
     @DisplayName("Search by prefix without result set limiting")
     fun test_getAllWordsByPrefix() {
-        val trie = Trie.createEmptyTrie()
+        val trie = DefaultTrie.createEmptyTrie()
         trie.insert("crow")
         trie.insert("cat")
         trie.insert("car")
