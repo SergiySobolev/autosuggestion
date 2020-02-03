@@ -1,10 +1,16 @@
 Type ahead service based on Trie data structure.
 
-**1. Use Cases.**
+1. Use Cases. 
 
     Service can be started in two modes: standalone and distributed.
 
-    1.1. Standalone
+    **1.1. Standalone**
+    
+    To start standalone service do:
+        
+            git clone https://github.com/SergiySobolev/autosuggestion.git
+            cd autosuggestion
+            gradlew build run
     
     1.2  Distributed
 
