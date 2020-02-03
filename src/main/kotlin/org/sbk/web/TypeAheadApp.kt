@@ -38,6 +38,13 @@ fun Application.module() {
                 call.respondText(status = HttpStatusCode.OK) {"Key deleted."}
             }
         }
+        route("suggest") {
+            get("/{key}") {
+                val key = call.parameters["key"]!!
+                val suggestion = trie.getAllWordsByPrefix(key)
+                call.respondText(status = HttpStatusCode.OK) {suggestion.toString()}
 
+            }
+        }
     }
 }
