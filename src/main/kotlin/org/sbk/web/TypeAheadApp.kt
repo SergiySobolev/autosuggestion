@@ -12,7 +12,8 @@ import org.sbk.trie.DefaultTrie
 val trie = DefaultTrie.createEmptyTrie()
 
 fun main() {
-    embeddedServer(Netty, port = 8080, module = Application::module).start()
+    val config = Config(8080)
+    embeddedServer(Netty, port = config.port, module = Application::module).start()
 }
 
 fun Application.module() {
@@ -48,3 +49,5 @@ fun Application.module() {
         }
     }
 }
+
+data class Config(val port: Int)
