@@ -7,16 +7,23 @@ import io.ktor.response.respondText
 import io.ktor.routing.*
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import org.sbk.config.Config
 import org.sbk.trie.DefaultTrie
+import org.sbk.zookeeper.DefaultZKManager
+import org.sbk.zookeeper.ZKManager
 
 val trie = DefaultTrie.createEmptyTrie()
 
 fun main() {
-    val config = Config(8080)
+    val config = Config.appConfig()
+    val zkManager:ZKManager = DefaultZKManager()
+
+    zkManager.create()
     embeddedServer(Netty, port = config.port, module = Application::module).start()
 }
 
 fun Application.module() {
+
     routing {
         route("/key") {
             get("/{key}") {
@@ -50,4 +57,5 @@ fun Application.module() {
     }
 }
 
-data class Config(val port: Int)
+
+
